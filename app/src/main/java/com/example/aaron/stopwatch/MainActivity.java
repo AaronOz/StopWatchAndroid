@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     long init,now,time,paused;
     TextView txt;
+    Button startPause;
     int seconds, minutes = 0;
     Handler handler;
     String result;
@@ -65,29 +66,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
             public void onClick(View view){
+                startPause = (Button) findViewById(R.id.buttStart);
                 if(pause == false){
                     if(started == false){
                         init = System.currentTimeMillis();
                         handler.post(updater);
                         started = true;
                         pause = true;
+                        startPause.setText("Pause");
                     }else {
                         onResume();
                         pause = true;
                         handler.post(updater);
+                        startPause.setText("Pause");
                     }
                 }else{
                     onPause();
                     pause = false;
                     handler.removeCallbacks(updater);
+                    startPause.setText("Resume");
                 }
                 Log.i("pause",String.valueOf(pause));
             }
             });
     }
     public void Reset(View view){
-        if(pause == true) {
+        startPause = (Button) findViewById(R.id.buttStart);
+        txt = (TextView) findViewById(R.id.currTime);
+        if(pause == false) {
             init = System.currentTimeMillis();
+            startPause.setText("Start");
+            txt.setText("00:00:00");
         }else{
             //Store in the listview
         }
