@@ -89,17 +89,20 @@ public class MainActivity extends AppCompatActivity {
                         started = true;
                         pause = true;
                         startPause.setText("Pause");
+                        startPause.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     }else {
                         onResume();
                         pause = true;
                         handler.post(updater);
                         startPause.setText("Pause");
+                        startPause.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     }
                 }else{
                     onPause();
                     pause = false;
                     handler.removeCallbacks(updater);
                     startPause.setText("Resume");
+                    startPause.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 }
                 Log.i("pause",String.valueOf(pause));
             }
@@ -113,12 +116,8 @@ public class MainActivity extends AppCompatActivity {
             startPause.setText("Start");
             txt.setText("00:00:00");
         }else{//Store record
-
-
             recordList.add(txt.getText().toString());
-
             listAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, recordList);
-
             mainListView.setAdapter(listAdapter);
         }
     }
