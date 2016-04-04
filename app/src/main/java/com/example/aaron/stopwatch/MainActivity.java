@@ -9,35 +9,49 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Chronometer;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.os.Handler;
 
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-//    Chronometer timer = (Chronometer) findViewById(R.id.chronometerMain);
 
-    long init,now,time,paused;
+
     TextView txt;
     Button startPause;
-    int seconds, minutes = 0;
     Handler handler;
+    private ListView mainListView;
+    private ArrayAdapter<String> listAdapter;
+    ArrayList<String> recordList = new ArrayList<String>();
+
     String result;
+    String [] records;
     boolean pause = false;
     boolean started = false;
+    int seconds, minutes = 0;
+    long init,now,time,paused;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler();
-        setContentView(R.layout.content_main);
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //List adapter
+        mainListView = (ListView) findViewById(R.id.listView);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         final Button start = (Button) findViewById(R.id.buttStart);
         start.setOnClickListener(new View.OnClickListener() {
             Runnable updater = new Runnable() {
@@ -70,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 if(pause == false){
                     if(started == false){
                         init = System.currentTimeMillis();
-                        handler.post(updater);
+                        handler.post(updater);//Enter Loop
                         started = true;
                         pause = true;
                         startPause.setText("Pause");
@@ -97,8 +112,14 @@ public class MainActivity extends AppCompatActivity {
             init = System.currentTimeMillis();
             startPause.setText("Start");
             txt.setText("00:00:00");
-        }else{
-            //Store in the listview
+        }else{//Store record
+
+
+            recordList.add(txt.getText().toString());
+
+            listAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, recordList);
+
+            mainListView.setAdapter(listAdapter);
         }
     }
 
